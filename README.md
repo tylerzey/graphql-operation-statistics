@@ -1,5 +1,9 @@
 # GraphQL Operation Statistics
 
+A simple, un-opinionated, zero-dependency way to implement rate limiting in GraphQL. The package inspects your queries and reports the total depth. You then decide what to do with that information.
+
+[![Blazing Fast](https://badgen.now.sh/badge/speed/blazing%20%F0%9F%94%A5/green)](https://www.npmjs.com/package/graphql-operation-statistics) [![Blazing Fast](https://badgen.now.sh/badge/speed/blazing%20%F0%9F%94%A5/green)](https://www.npmjs.com/package/graphql-operation-statistics) [![Blazing Fast](https://badgen.now.sh/badge/speed/blazing%20%F0%9F%94%A5/green)](https://www.npmjs.com/package/graphql-operation-statistics)
+
 GraphQL presents some interesting issues with rate limiting.
 
 In a typical REST setup, you can simply rate limit by the number of requests sent to your server.
