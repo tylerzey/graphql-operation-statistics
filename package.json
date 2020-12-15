@@ -1,6 +1,6 @@
 {
   "name": "graphql-operation-statistics",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "author": "tz",
   "main": "dist/index.js",
@@ -10,6 +10,10 @@
     "dist",
     "src"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tylerzey/graphql-operation-statistics.git"
+  },
   "scripts": {
     "analyze": "size-limit --why",
     "build": "tsdx build",
