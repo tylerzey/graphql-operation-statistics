@@ -50,11 +50,20 @@ GraphQL Operation Statistics gives you information about the query you are about
 
 You simply pass it the query string and it returns the depthOfDeepestQuery and sumOfMaxDepthOnAllQueries for each operation.
 
-Example:
+## Install
+
+```
+yarn add graphql-operation-statistics
+
+npm i graphql-operation-statistics
+```
+
+## Usage
 
 ```js
+// Example 1
 import { getGraphQLQueryStats } from 'graphql-operation-statistics';
-const response = getGraphQLQueryStats(
+const stats = getGraphQLQueryStats(
   `query Users {
     user {
       pets {
@@ -71,17 +80,32 @@ const response = getGraphQLQueryStats(
     }
   }`
 );
-expect(response['Users'].depthOfDeepestQuery).toBe(7);
-expect(response['Users'].sumOfMaxDepthOnAllQueries).toBe(7);
+expect(stats['Users'].depthOfDeepestQuery).toBe(7);
+expect(stats['Users'].sumOfMaxDepthOnAllQueries).toBe(7);
+```
 
+```js
+// Example 2
+import { getGraphQLQueryStats } from 'graphql-operation-statistics';
+const { query } = JSON.parse(body);
+try {
+  const stats = getGraphQLQueryStats(query);
+
+  for (const operationName of Object.keys(stats)) {
+    console.log(
+      `${operationName} - total depth: ${stats[operationName].sumOfMaxDepthOnAllQueries} deepest query: ${stats[operationName].depthOfDeepestQuery}`
+    );
+  }
+} catch (error) {
+  console.error('The query passed in is not a valid', query);
+}
+```
+
+```js
+// Example 3
+import { getGraphQLQueryStats } from 'graphql-operation-statistics';
 const response = getGraphQLQueryStats(
-  `mutation($id: String!) {
-    patch(id: $id) {
-      metadata {
-        id
-      }
-    }
-  }`
+  `mutation($id: String!) { patch(id: $id) { metadata { id } } }`
 );
 
 expect(response['unnamedOperation1'].depthOfDeepestQuery).toBe(3);
@@ -93,3 +117,7 @@ expect(response['unnamedOperation1'].sumOfMaxDepthOnAllQueries).toBe(3);
 If your operations do not have names, the function will return `unnamedOperation1` where `1` increments for each unnamed operation.
 
 This package does not care if you use Apollo Server, Serverless GraphQL, or anything else. You could even use it on the frontend if you wanted to inspect queries before sending them off.
+
+```
+
+```
