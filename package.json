@@ -1,6 +1,6 @@
 {
   "name": "graphql-operation-statistics",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "MIT",
   "author": "tz",
   "main": "dist/index.js",
@@ -15,7 +15,7 @@
     "url": "git+https://github.com/tylerzey/graphql-operation-statistics.git"
   },
   "scripts": {
-    "build": "tsup ./src/index.ts",
+    "build": "tsup ./src/index.ts --dts",
     "test": "jest"
   },
   "prettier": {
