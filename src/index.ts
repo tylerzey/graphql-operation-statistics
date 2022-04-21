@@ -1,9 +1,7 @@
-import {
-  parse,
-  Source,
+import { parse, Source, Kind } from 'graphql';
+import type {
   DocumentNode,
   DefinitionNode,
-  Kind,
   FragmentDefinitionNode,
   OperationDefinitionNode,
   SelectionNode,
@@ -13,15 +11,21 @@ export function createDocument(query: string): DocumentNode {
   const source = new Source(query, 'GraphQL request');
   return parse(source);
 }
-type OperationStaticsticType = {
+type OperationStatType = {
   depthOfDeepestQuery: number;
-  sumOfMaxDepthOnAllQueries: number;
+  totalDepthOfQuery: number;
 };
 type DocumentQueryStatsResponse = {
-  [operationName: string]: OperationStaticsticType;
+  [operationName: string]: OperationStatType;
 };
 
-export function getGraphQLQueryStats(
+export function getGraphQLTotalQueryDepth(document: DocumentNode | string): number {
+  return Object.entries(getGraphQLQueryStatsByOperation(document)).reduce((acc, [, val]) => {
+    return acc + val.totalDepthOfQuery
+  }, 0)
+}
+
+export function getGraphQLQueryStatsByOperation(
   document: DocumentNode | string
 ): DocumentQueryStatsResponse {
   let graphQLDocument: DocumentNode;
@@ -129,7 +133,7 @@ function determineDepthStatistics(
   fragments: FragmentMapping,
   depthSoFar: number,
   operationName: string
-): OperationStaticsticType {
+): OperationStatType {
   if (
     node.kind === Kind.OPERATION_DEFINITION ||
     node.kind === Kind.INLINE_FRAGMENT ||
@@ -141,7 +145,7 @@ function determineDepthStatistics(
     );
 
     return {
-      sumOfMaxDepthOnAllQueries: sum(arrayOfMaxDepths),
+      totalDepthOfQuery: sum(arrayOfMaxDepths),
       depthOfDeepestQuery: Math.max(...arrayOfMaxDepths),
     };
   }
@@ -153,7 +157,7 @@ function determineDepthStatistics(
       ) || [];
 
     return {
-      sumOfMaxDepthOnAllQueries: 1 + sum(arrayOfMaxDepths),
+      totalDepthOfQuery: 1 + sum(arrayOfMaxDepths),
       depthOfDeepestQuery: 1 + Math.max(...arrayOfMaxDepths),
     };
   }
@@ -167,13 +171,14 @@ function determineDepthStatistics(
     );
 
     return {
-      sumOfMaxDepthOnAllQueries: x,
+      totalDepthOfQuery: x,
       depthOfDeepestQuery: x,
     };
   }
 
   throw new Error('uh oh! depth crawler cannot handle: ' + node.kind);
 }
+
 function sum(arr: number[]): number {
   return arr.reduce((acc, cur) => acc + cur, 0);
 }

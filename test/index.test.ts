@@ -1,9 +1,9 @@
-import { getGraphQLQueryStats as getGraphQLDocumentQueryStats, createDocument } from '../src';
+import { getGraphQLQueryStatsByOperation, createDocument } from '../src';
 
 describe('detects the depth of graphQL operations', () => {
   describe('queries', () => {
     it('detects the deepest selection for a single query', () => {
-      const { read } = getGraphQLDocumentQueryStats(
+      const { read } = getGraphQLQueryStatsByOperation(
         `query read {
           version
           user {
@@ -12,11 +12,11 @@ describe('detects the depth of graphQL operations', () => {
       }`
       );
       expect(read.depthOfDeepestQuery).toBe(2);
-      expect(read.sumOfMaxDepthOnAllQueries).toBe(3);
+      expect(read.totalDepthOfQuery).toBe(3);
     });
 
     it('detects the deepest selection of multiple queries', () => {
-      const { read } = getGraphQLDocumentQueryStats(
+      const { read } = getGraphQLQueryStatsByOperation(
         `query read {
           matt: user(name: "matt") {
             email
@@ -36,11 +36,11 @@ describe('detects the depth of graphQL operations', () => {
       }`
       );
       expect(read.depthOfDeepestQuery).toBe(4);
-      expect(read.sumOfMaxDepthOnAllQueries).toBe(6);
+      expect(read.totalDepthOfQuery).toBe(6);
     });
 
     it('works without names', () => {
-      const response = getGraphQLDocumentQueryStats(
+      const response = getGraphQLQueryStatsByOperation(
         `query {
           user {
             email
@@ -51,7 +51,7 @@ describe('detects the depth of graphQL operations', () => {
     });
 
     it('works with graphQL documents', () => {
-      const response = getGraphQLDocumentQueryStats(
+      const response = getGraphQLQueryStatsByOperation(
         createDocument(`query {
           user {
             email
@@ -62,7 +62,7 @@ describe('detects the depth of graphQL operations', () => {
     });
 
     it('works with fragments', () => {
-      const response = getGraphQLDocumentQueryStats(
+      const response = getGraphQLQueryStatsByOperation(
         `query read0 {
         ... on Query {
          version
@@ -73,7 +73,7 @@ describe('detects the depth of graphQL operations', () => {
     });
 
     it('works without the query name', () => {
-      const response = getGraphQLDocumentQueryStats(
+      const response = getGraphQLQueryStatsByOperation(
         `{
         user {
           pets {
@@ -91,13 +91,13 @@ describe('detects the depth of graphQL operations', () => {
       }`
       );
       expect(response['unnamedOperation1'].depthOfDeepestQuery).toBe(7);
-      expect(response['unnamedOperation1'].sumOfMaxDepthOnAllQueries).toBe(7);
+      expect(response['unnamedOperation1'].totalDepthOfQuery).toBe(7);
     });
   });
 
   describe('mutations', () => {
     it('detects the deepest selection for a single query', () => {
-      const response = getGraphQLDocumentQueryStats(
+      const response = getGraphQLQueryStatsByOperation(
         `mutation(
           $organizationId: String!
         ) {
@@ -112,7 +112,7 @@ describe('detects the depth of graphQL operations', () => {
       );
 
       expect(response['unnamedOperation1'].depthOfDeepestQuery).toBe(3);
-      expect(response['unnamedOperation1'].sumOfMaxDepthOnAllQueries).toBe(3);
+      expect(response['unnamedOperation1'].totalDepthOfQuery).toBe(3);
     });
   });
 });
