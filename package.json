@@ -1,6 +1,6 @@
 {
   "name": "graphql-operation-statistics",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "license": "MIT",
   "author": "tz",
   "main": "dist/index.js",
@@ -15,11 +15,8 @@
     "url": "git+https://github.com/tylerzey/graphql-operation-statistics.git"
   },
   "scripts": {
-    "build": "tsdx build",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "start": "tsdx watch",
-    "test": "tsdx test --watch startAbsolutelyNothingAtLaunch"
+    "build": "tsup ./src/index.ts",
+    "test": "jest"
   },
   "prettier": {
     "printWidth": 80,
@@ -28,9 +25,12 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
+    "@types/jest": "27.4.1",
     "graphql": "16.3.0",
-    "tsdx": "0.14.1",
-    "tslib": "2.3.1",
+    "jest": "27.5.1",
+    "ts-jest": "27.1.4",
+    "ts-node": "10.7.0",
+    "tsup": "5.12.6",
     "typescript": "4.6.3"
   },
   "peerDependencies": {
