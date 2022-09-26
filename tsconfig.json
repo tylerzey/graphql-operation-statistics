@@ -13,6 +13,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "importsNotUsedAsValues": "error",
     "moduleResolution": "node",
     "jsx": "react",
     "esModuleInterop": true,
