@@ -15,8 +15,9 @@
     "url": "git+https://github.com/tylerzey/graphql-operation-statistics.git"
   },
   "scripts": {
+    "lint": "prettier --write .",
     "build": "tsup ./src/index.ts --dts",
-    "test": "jest"
+    "test": "vitest"
   },
   "prettier": {
     "printWidth": 80,
@@ -25,12 +26,12 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
-    "@types/jest": "27.5.2",
     "graphql": "16.6.0",
-    "jest": "27.5.1",
-    "ts-jest": "27.1.5",
-    "tsup": "5.12.9",
-    "typescript": "4.8.3"
+    "prettier": "2.7.1",
+    "tslib": "2.4.0",
+    "tsup": "6.2.3",
+    "typescript": "4.8.3",
+    "vitest": "0.23.4"
   },
   "peerDependencies": {
     "graphql": "^16.3.0"

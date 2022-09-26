@@ -1,3 +1,4 @@
+import { expect, describe, it } from 'vitest';
 import { getGraphQLQueryStatsByOperation, createDocument } from '../src';
 
 describe('detects the depth of graphQL operations', () => {

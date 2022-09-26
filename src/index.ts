@@ -19,10 +19,15 @@ type DocumentQueryStatsResponse = {
   [operationName: string]: OperationStatType;
 };
 
-export function getGraphQLTotalQueryDepth(document: DocumentNode | string): number {
-  return Object.entries(getGraphQLQueryStatsByOperation(document)).reduce((acc, [, val]) => {
-    return acc + val.totalDepthOfQuery
-  }, 0)
+export function getGraphQLTotalQueryDepth(
+  document: DocumentNode | string
+): number {
+  return Object.entries(getGraphQLQueryStatsByOperation(document)).reduce(
+    (acc, [, val]) => {
+      return acc + val.totalDepthOfQuery;
+    },
+    0
+  );
 }
 
 export function getGraphQLQueryStatsByOperation(
@@ -99,7 +104,7 @@ function determineDepth(
     node.kind === Kind.FRAGMENT_DEFINITION
   ) {
     const selections = node.selectionSet.selections;
-    const arrayOfMaxDepths = selections.map(selection =>
+    const arrayOfMaxDepths = selections.map((selection) =>
       determineDepth(selection, fragments, depthSoFar, operationName)
     );
 
@@ -107,7 +112,7 @@ function determineDepth(
   }
 
   if (node.kind === Kind.FIELD) {
-    const arrayOfMaxDepths = node.selectionSet?.selections?.map(selection =>
+    const arrayOfMaxDepths = node.selectionSet?.selections?.map((selection) =>
       determineDepth(selection, fragments, depthSoFar + 1, operationName)
     );
 
@@ -140,7 +145,7 @@ function determineDepthStatistics(
     node.kind === Kind.FRAGMENT_DEFINITION
   ) {
     const selections = node.selectionSet.selections;
-    const arrayOfMaxDepths = selections.map(selection =>
+    const arrayOfMaxDepths = selections.map((selection) =>
       determineDepth(selection, fragments, depthSoFar, operationName)
     );
 
@@ -152,7 +157,7 @@ function determineDepthStatistics(
 
   if (node.kind === Kind.FIELD) {
     const arrayOfMaxDepths =
-      node.selectionSet?.selections?.map(selection =>
+      node.selectionSet?.selections?.map((selection) =>
         determineDepth(selection, fragments, depthSoFar + 1, operationName)
       ) || [];
 
